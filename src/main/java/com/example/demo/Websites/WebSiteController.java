@@ -15,10 +15,15 @@ public class WebSiteController {
     public WebSiteController(WebSiteService webSiteService) {
         this.webSiteService = webSiteService;
     }
-
+    //update the following to search for exact words if "" are used
     @GetMapping("/words")
     public List<Website> findByWordIn(@RequestParam("q") String words) {
-        return webSiteService.findByWordIn(words);
+        if (words.charAt(0) == '"' && words.charAt(words.length() - 1) == '"') {
+            
+            return webSiteService.findByWordIn(words, true);
+        }
+
+        return webSiteService.findByWordIn(words, false);
     }
 
     @GetMapping("/count")

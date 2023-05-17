@@ -25,7 +25,14 @@ public class WebSiteService {
         this.crawlRepo = crawlRepo;
     }
 
-    public List<Website> findByWordIn(String words) {
+    public List<Website> findByWordIn(String words, boolean exact) {
+
+        if (exact) {
+            String word = words.substring(1, words.length() - 1);
+            List<String> listOfExactWords = List.of(word.split("[,!.+/ ]+"));
+            return Ranker.rank(sampleRepo.findByWordIn(listOfExactWords), this.crawlRepo.count());
+        }
+
 
         List<String> listsWords = List.of(words.split("[,!.+/ ]+"));
         List<String> stemmedList = new ArrayList<String>();
