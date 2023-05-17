@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.stereotype.Service;
 import com.example.demo.WordProcessor.WordProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,15 +23,21 @@ public class WebSiteService {
 
     public List<Samples> findByWordIn(String words) {
         List<String> listsWords = List.of(words.split("[,!.+/ ]+"));
+        List<String> stemmedList = new ArrayList<String>();
         WordProcessor wp = new WordProcessor();
-        for (int i = 0; i < listsWords.size(); i++) { //for each word in the list
-            listsWords.set(i, listsWords.get(i).replaceAll("[^a-zA-Z]", "")); //only allowing alphanumerics
-            listsWords.set(i,wp.processWord(listsWords.get(i))); //setting word in list with the stem of the words 
-        }
-        return sampleRepo.findByWordIn(listsWords);
+        String stemmedWord;
+       for (int i = 0; i < listsWords.size(); i++) { //for each word in the list
+           //stemmedWord = listsWords.get(i).replaceAll("[^a-zA-Z]", "");
+           stemmedWord = wp.processWord(listsWords.get(i));
+           if (stemmedWord != null && !stemmedWord.equals(""))
+                stemmedList.add(stemmedWord);
+               
+       }
+        return sampleRepo.findByWordIn(stemmedList);
     }
 
     public long count() {
         return sampleRepo.count();
     }
+
 }

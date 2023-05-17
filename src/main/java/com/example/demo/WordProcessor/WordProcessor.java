@@ -32,7 +32,7 @@ public class WordProcessor {
             "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would",
             "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself",
             "yourselves"));
-    Dictionary<String, String> stemmedWords = new Hashtable<String, String>();
+    //Dictionary<String, String> stemmedWords = new Hashtable<String, String>();
     public WordProcessor() {
         //this is the constructor
 
@@ -47,17 +47,17 @@ public class WordProcessor {
         }
         else {
             String stemmedWord = porterStemmer.stem(word);
-            stemmedWords.put(word, stemmedWord);
-            return stemmedWord;
+            //stemmedWords.put(word, stemmedWord);
+            return stemmedWord.toLowerCase();
         }
     }
-    public Dictionary<String, String> getStemmedWords() {
-        return stemmedWords;
-    }
+    //public Dictionary<String, String> getStemmedWords() {
+       // return stemmedWords;
+    //}
     //main to test the class
     public static void main(String[] args) {
         WordProcessor wp = new WordProcessor();
-        String word = "I";
+        String word = "locals";
         String stemmedWord = wp.processWord(word);
         System.out.println(stemmedWord);
     }
