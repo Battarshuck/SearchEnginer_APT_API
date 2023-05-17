@@ -17,7 +17,7 @@ public class WebSiteController {
     }
 
     @GetMapping("/words")
-    public List<Samples> findByWordIn(@RequestParam("q") String words) {
+    public List<Website> findByWordIn(@RequestParam("q") String words) {
         return webSiteService.findByWordIn(words);
     }
 

@@ -1,7 +1,9 @@
 package com.example.demo.Websites;
 
+import com.example.demo.DataBase.CrawlRepository;
 import com.example.demo.DataBase.SampleRepository;
 import com.example.demo.DataBase.Samples;
+import com.example.demo.Ranker.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -15,13 +17,16 @@ import java.util.List;
 public class WebSiteService {
 
     SampleRepository sampleRepo;
+    CrawlRepository crawlRepo;
 
     @Autowired
-    public WebSiteService(SampleRepository sampleRepo) {
+    public WebSiteService(SampleRepository sampleRepo, CrawlRepository crawlRepo) {
         this.sampleRepo = sampleRepo;
+        this.crawlRepo = crawlRepo;
     }
 
-    public List<Samples> findByWordIn(String words) {
+    public List<Website> findByWordIn(String words) {
+
         List<String> listsWords = List.of(words.split("[,!.+/ ]+"));
         List<String> stemmedList = new ArrayList<String>();
         WordProcessor wp = new WordProcessor();
@@ -33,7 +38,7 @@ public class WebSiteService {
                 stemmedList.add(stemmedWord);
                
        }
-        return sampleRepo.findByWordIn(stemmedList);
+        return Ranker.rank(sampleRepo.findByWordIn(stemmedList), this.crawlRepo.count());
     }
 
     public long count() {
