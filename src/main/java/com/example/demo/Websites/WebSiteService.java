@@ -38,6 +38,19 @@ public class WebSiteService {
         if (exact) {
             String word = words.substring(1, words.length() - 1);
             List<String> listOfExactWords = List.of(word.split("[,!.+/ ]+"));
+            // List<UnstemmedSamples> tempo= unstemmedSampleRepository.findByWordIn(listOfExactWords);
+            // //we need to match urls with each other 
+            // //then check if indices are consecutive
+            // //then return the list of websites
+            // for(int i=0;i<tempo.size();i++)
+            // {   
+                
+            //     List<URLS> urls = tempo.get(i).getUrls();
+            //     for(int j=0;j<urls.size();j++)
+            //     {
+
+            // }
+
             return ranker.rank(unstemmedSampleRepository.findByWordIn(listOfExactWords), this.crawlRepo.count(), exact);
         }
 
