@@ -34,9 +34,9 @@ public class Ranker {
                 //inserting the object to the hashmap
                 //check if already exists
                 if (ranks.containsKey(url.getUrl()))
-                    ranks.get(url.getUrl()).addToRank(idf * url.getTf());
+                    ranks.get(url.getUrl()).addToRank(idf * url.getTf()*1.2);
                  else
-                    ranks.put(url.getUrl(), new Website(idf*url.getTf(), url.getUrl(), url.getContent(), url.getTitle()));
+                    ranks.put(url.getUrl(), new Website(idf*url.getTf()*1.2, url.getUrl(), url.getContent(), url.getTitle()));
 
             }
         }
@@ -45,7 +45,7 @@ public class Ranker {
         //loop over the list and add the popularity
         for (Website website : rankedList) {
             if (popularity.containsKey(website.getUrl()))
-                website.addToRank(0.5*popularity.get(website.getUrl()));
+                website.addToRank(0.35*popularity.get(website.getUrl()));
         }
         //sort by rank the highest first
         rankedList.sort(Collections.reverseOrder());
@@ -65,9 +65,9 @@ public class Ranker {
                 //inserting the object to the hashmap
                 //check if already exists
                 if (ranks.containsKey(url.getUrl()))
-                    ranks.get(url.getUrl()).addToRank(idf * url.getTf());
+                    ranks.get(url.getUrl()).addToRank(idf * url.getTf()*1.2);
                 else
-                    ranks.put(url.getUrl(), new Website(idf*url.getTf(), url.getUrl(), url.getContent(), url.getTitle()));
+                    ranks.put(url.getUrl(), new Website(idf*url.getTf()*1.2, url.getUrl(), url.getContent(), url.getTitle()));
 
             }
         }
@@ -76,7 +76,7 @@ public class Ranker {
         //loop over the list and add the popularity
         for (Website website : rankedList) {
             if (popularity.containsKey(website.getUrl()))
-                website.addToRank(0.5*popularity.get(website.getUrl()));
+                website.addToRank(0.35*popularity.get(website.getUrl()));
         }
         //sort by rank the highest first
         rankedList.sort(Collections.reverseOrder());
