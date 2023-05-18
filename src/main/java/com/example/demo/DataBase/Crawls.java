@@ -3,7 +3,7 @@ package com.example.demo.DataBase;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "sampleCollection")
+@Document(collection = "mainCrawler")
 public class Crawls {
     @Id
     private String id;

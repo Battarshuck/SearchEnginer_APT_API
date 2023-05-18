@@ -1,8 +1,6 @@
 package com.example.demo.Websites;
 
-import com.example.demo.DataBase.CrawlRepository;
-import com.example.demo.DataBase.SampleRepository;
-import com.example.demo.DataBase.Samples;
+import com.example.demo.DataBase.*;
 import com.example.demo.Ranker.Ranker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,11 +16,21 @@ public class WebSiteService {
 
     SampleRepository sampleRepo;
     CrawlRepository crawlRepo;
+    UnstemmedSampleRepository unstemmedSampleRepository;
+
+    PRRObjectRepository prrObjectRepository;
+
+    Ranker ranker;
 
     @Autowired
-    public WebSiteService(SampleRepository sampleRepo, CrawlRepository crawlRepo) {
+    public WebSiteService(SampleRepository sampleRepo, CrawlRepository crawlRepo, UnstemmedSampleRepository unstemmedSampleRepository, PRRObjectRepository prrObjectRepository) {
         this.sampleRepo = sampleRepo;
         this.crawlRepo = crawlRepo;
+        this.unstemmedSampleRepository = unstemmedSampleRepository;
+        this.prrObjectRepository = prrObjectRepository;
+
+        List<PRRObject> temp =  prrObjectRepository.findAllByRank();
+        this.ranker = new Ranker(temp);
     }
 
     public List<Website> findByWordIn(String words, boolean exact) {
@@ -30,7 +38,7 @@ public class WebSiteService {
         if (exact) {
             String word = words.substring(1, words.length() - 1);
             List<String> listOfExactWords = List.of(word.split("[,!.+/ ]+"));
-            return Ranker.rank(sampleRepo.findByWordIn(listOfExactWords), this.crawlRepo.count());
+            return ranker.rank(unstemmedSampleRepository.findByWordIn(listOfExactWords), this.crawlRepo.count(), exact);
         }
 
 
@@ -45,7 +53,7 @@ public class WebSiteService {
                 stemmedList.add(stemmedWord);
                
        }
-        return Ranker.rank(sampleRepo.findByWordIn(stemmedList), this.crawlRepo.count());
+        return ranker.rank(sampleRepo.findByWordIn(stemmedList), this.crawlRepo.count());
     }
 
     public long count() {

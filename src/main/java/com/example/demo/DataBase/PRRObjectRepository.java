@@ -7,11 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SampleRepository extends MongoRepository<Samples, String> {
-    @Query(value = "{ 'word' : ?0 }")
-    List<Samples> findByWord(String word);
-
-    List<Samples> findByWordIn(List<String> words);
-
-     long count();
+public interface PRRObjectRepository extends MongoRepository<PRRObject, String> {
+    @Query("{ 'url' : 1, 'Rank' : 1 }")
+    List<PRRObject> findAllByRank();
+    long count();
 }
